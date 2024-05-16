@@ -1,5 +1,5 @@
 <?php
-function connectDB() {
+function connectDB()
+{
     return new SQLite3('aluno.db');
 }
-?>

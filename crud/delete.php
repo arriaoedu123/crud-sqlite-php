@@ -1,5 +1,6 @@
 <?php
-function deleteUser($id) {
+function deleteUser($id)
+{
     $db = connectDB();
     $query = "DELETE FROM alunos WHERE id=:id";
     $stmt = $db->prepare($query);

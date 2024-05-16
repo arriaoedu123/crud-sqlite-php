@@ -1,5 +1,6 @@
 <?php
-function getUsers() {
+function getUsers()
+{
     $db = connectDB();
     $query = "SELECT * FROM alunos";
     $result = $db->query($query);
@@ -10,4 +11,3 @@ function getUsers() {
     $db->close();
     return $users;
 }
-?>

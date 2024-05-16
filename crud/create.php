@@ -1,5 +1,6 @@
 <?php
-function createUser($data) {
+function createUser($data)
+{
     $db = connectDB();
     $query = "INSERT INTO alunos (nome, email, telefone, endereco, cidade, estado) 
               VALUES (:nome, :email, :telefone, :endereco, :cidade, :estado)";

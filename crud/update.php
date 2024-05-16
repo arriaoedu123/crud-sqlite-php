@@ -1,5 +1,6 @@
 <?php
-function updateUser($data) {
+function updateUser($data)
+{
     $db = connectDB();
     $query = "UPDATE alunos SET nome=:nome, email=:email, telefone=:telefone, endereco=:endereco, cidade=:cidade, estado=:estado WHERE id=:id";
     $stmt = $db->prepare($query);
