@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+#id {
+    width: 72px;
+}
+
+table th {
+    text-align: center;
+}
+
+table tr td {
+    text-align: center;
+}
+
+.icon img {
+  width: 32px;
+  height: auto;
+    filter: invert(80%);
+}
+
+.icon img:hover {
+    filter: invert(100%);
+}
