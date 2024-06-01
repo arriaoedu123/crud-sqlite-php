@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($user && password_verify($password, $user["password"])) {
     $_SESSION["user_id"] = $user["id"];
     $_SESSION["username"] = $user["username"];
-    header("Location: crud/crud.php");
+    header("Location: crud/welcome.php");
     exit();
   } else {
     echo '<script>alert("Usuário ou senha incorretos!");</script>';
@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <title>Login</title>
   <link href="bootstrap/bootstrap.min.css" rel="stylesheet" />
   <link href="index.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <div class="d-flex container-fluid flex-column align-items-center justify-content-center p-3 mt-3 gap-3 form-container">

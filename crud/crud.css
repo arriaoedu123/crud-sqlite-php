@@ -6,6 +6,14 @@
   font-family: "Poppins", sans-serif;
 }
 
+.welcome-container {
+  min-height: calc(100vh - 56px);
+}
+
+.welcome {
+  width: 100%;
+}
+
 #id {
   width: 72px;
 }
@@ -26,4 +34,16 @@ table tr td {
 
 .icon img:hover {
   filter: invert(100%);
+}
+
+@media (min-width: 600px) {
+  .welcome {
+    width: 600px;
+  }
+}
+
+@media (min-width: 768px) {
+  .welcome {
+    width: 640px;
+  }
 }

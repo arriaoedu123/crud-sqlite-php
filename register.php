@@ -40,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <title>Cadastro</title>
   <link href="bootstrap/bootstrap.min.css" rel="stylesheet" />
   <link href="index.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <div class="d-flex container-fluid flex-column align-items-center justify-content-center p-3 mt-3 gap-3 form-container">

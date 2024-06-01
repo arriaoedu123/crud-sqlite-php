@@ -6,11 +6,21 @@ if (!isset($_SESSION["user_id"])) {
   exit();
 }
 
-$username = $_SESSION["username"];
-
 include "connectDB.php";
 include "read.php";
 $users = getUsers();
+
+$cursos = [
+  "ADS" => "Análise e Desenvolvimento de Sistemas",
+  "SI" => "Sistemas de Informação",
+  "CC" => "Ciência da Computação",
+  "EC" => "Engenharia da Computação",
+  "ES" => "Engenharia de Software",
+  "RTV" => "Redes de Telecomunicações",
+  "BD" => "Banco de Dados",
+  "SM" => "Segurança da Informação",
+  "TI" => "Tecnologia da Informação"
+];
 
 $estados = [
   "AC" => "Acre",
@@ -52,7 +62,7 @@ if (isset($_GET["edit"])) {
   $user = [
     "id" => "",
     "nome" => "",
-    "email" => "",
+    "curso" => "",
     "telefone" => "",
     "endereco" => "",
     "cidade" => "",
@@ -64,7 +74,7 @@ if (isset($_GET["delete"])) {
   include "delete.php";
   $delete_id = $_GET["delete"];
   deleteUser($delete_id);
-  header("Location: crud.php");
+  header("Location: crudTwo.php");
   exit();
 }
 
@@ -76,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   } else {
     updateUser($_POST);
   }
-  header("Location: crud.php");
+  header("Location: crudTwo.php");
   exit();
 }
 ?>
@@ -89,24 +99,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <title>CRUD - SQLite && PHP</title>
   <link href="../bootstrap/bootstrap.min.css" rel="stylesheet" />
   <link href="crud.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
   <nav class="navbar pt-3">
-    <div class="container-xxl justify-content-end gap-4">
-      <a href="https://github.com/arriaoedu123/crud-sqlite-php" target="_blank" class="icon"><img src="../images/github.svg" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="GitHub" /></a>
-      <a class="me-md-3 me-xxl-0 icon" href="logout.php" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Sair"><img src="../images/box-arrow-left.svg" /></a>
+    <div class="container-xxl justify-content-start">
+      <a class="me-md-3 me-xxl-0 icon" href="./welcome.php" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Voltar"><img src="../images/arrow-left-square.svg" /></a>
     </div>
   </nav>
+  <div class="d-flex flex-column align-items-center gap-5 mt-3">
+    <span class="h1 text-center">
+      <?php if (isset($_GET["edit"])) : ?>
+        EDITAR ALUNO
+      <?php else : ?>
+        CADASTRAR ALUNO
+      <?php endif; ?>
+    </span>
+  </div>
   <div class="d-flex flex-column container-fluid align-items-center p-3 mt-3">
-    <form method="post" action="crud.php" class="container row g-3 bg-body-tertiary rounded p-3">
-      <span class="h1 text-center mb-3">
-        <?php if (isset($_GET["edit"])) : ?>
-          EDITAR ALUNO
-        <?php else : ?>
-          ADICIONAR ALUNO
-        <?php endif; ?>
-      </span>
+    <form method="post" action="crudOne.php" class="container row g-3 bg-body-tertiary rounded p-3">
       <?php if (isset($_GET["edit"])) : ?>
         <div>
           <label for="id" class="form-label pe-none">RA</label>
@@ -131,12 +143,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
       </div>
       <div class="col-12 col-md-7">
-        <label for="email" class="form-label">E-MAIL</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="claudio@exemplo.com" value="<?= isset(
-                                                                                                                    $user["email"]
-                                                                                                                  )
-                                                                                                                    ? $user["email"]
-                                                                                                                    : "" ?>" required>
+        <label for="curso" class="form-label">CURSO</label>
+        <select class="form-select" id="curso" name="curso" required>
+          <option value="">Selecione o curso</option>
+          <?php foreach ($cursos as $sigla => $curso) : ?>
+            <option value="<?= $sigla ?>" <?= isset($user["curso"]) && $user["curso"] == $sigla ? "selected" : "" ?>>
+              <?= $curso ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
       </div>
       <div class="col-12 col-md-4">
         <label for="telefone" class="form-label">TELEFONE</label>
@@ -182,39 +197,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           <?php endif; ?>
         </button>
         <?php if (isset($_GET["edit"])) : ?>
-          <a href="crud.php" class="btn btn-outline-danger">CANCELAR</a>
+          <a href="crudTwo.php" class="btn btn-outline-danger">CANCELAR</a>
         <?php endif; ?>
       </div>
     </form>
   </div>
-  <?php if (!empty($users)) : ?>
-    <div class="table-responsive p-3 bg-body-tertiary">
-      <table class="table table-striped">
-        <tr>
-          <th>RA</th>
-          <th>NOME</th>
-          <th>E-MAIL</th>
-          <th>TELEFONE</th>
-          <th>ENDEREÇO</th>
-          <th>CIDADE</th>
-          <th>ESTADO</th>
-          <th>AÇÕES</th>
-        </tr>
-        <?php foreach ($users as $user) : ?>
-          <tr>
-            <td class="fw-bold"><?= $user["id"] ?></td>
-            <td><?= $user["nome"] ?></td>
-            <td><?= $user["email"] ?></td>
-            <td><?= $user["telefone"] ?></td>
-            <td><?= $user["endereco"] ?></td>
-            <td><?= $user["cidade"] ?></td>
-            <td><?= $user["estado"] ?></td>
-            <td class="d-flex justify-content-center gap-3"><a class="btn btn-secondary btn-sm" href="crud.php?edit=<?= $user["id"] ?>">EDITAR</a><button type="button" class="btn btn-outline-danger btn-sm" onclick="if(confirm('Deseja excluir esse aluno?') == true) { window.location.href = 'crud.php?delete=<?= $user["id"] ?>' } else { return false }">DELETAR</button></td>
-          </tr>
-        <?php endforeach; ?>
-      </table>
-    </div>
-  <?php endif; ?>
 
   <script src="../bootstrap/bootstrap.bundle.min.js"></script>
   <script src="crud.js"></script>
